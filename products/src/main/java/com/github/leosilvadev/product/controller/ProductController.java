@@ -18,6 +18,7 @@ import com.github.leosilvadev.product.domain.Product;
 import com.github.leosilvadev.product.services.ProductService;
 
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 @RestController
 @RequestMapping("/v1/products")
@@ -38,7 +39,7 @@ public class ProductController {
 
 	@PostMapping()
 	public Observable<Product> create(@Valid @RequestBody ProductRegistration productRegistration) {
-		return productService.create(productRegistration);
+		return productService.create(productRegistration).subscribeOn(Schedulers.io());
 	}
 
 }

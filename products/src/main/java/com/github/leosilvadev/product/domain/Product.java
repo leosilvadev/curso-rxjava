@@ -2,7 +2,6 @@ package com.github.leosilvadev.product.domain;
 
 import java.math.BigDecimal;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +27,7 @@ public class Product {
 	private BigDecimal price;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne
 	private Category category;
 
 	@NotNull

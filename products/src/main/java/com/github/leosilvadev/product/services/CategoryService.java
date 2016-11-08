@@ -76,6 +76,7 @@ public class CategoryService {
 
 	public Observable<Category> create(Long id, String name) {
 		Observable<Pair<Category, String>> obsFindById = just(Pair.of(id, name)).flatMap(pair -> {
+			System.out.println("CategoryService.create: "+Thread.currentThread().getName());
 			if (pair.getLeft() == null)
 				return just(Pair.of(null, pair.getRight()));
 
@@ -85,12 +86,14 @@ public class CategoryService {
 		});
 
 		return obsFindById.flatMap(pair -> {
+			System.out.println("CategoryService.create flatmap: "+Thread.currentThread().getName());
 			if (pair.getLeft() == null) {
 				return error(new CategoryNotFound(pair.getRight()));
 			} else {
 				return just(pair.getLeft());
 			}
 		}).onErrorResumeNext(ex -> {
+			System.out.println("CategoryService.create onErrorResumeNext: "+Thread.currentThread().getName());
 			CategoryNotFound notFound = (CategoryNotFound) ex;
 
 			if (notFound.getName() == null)

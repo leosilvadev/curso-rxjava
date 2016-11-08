@@ -45,12 +45,14 @@ public class ProductService {
 
 	public Observable<Product> create(ProductRegistration productRegistration) {
 		return just(productRegistration).flatMap(registration -> {
+			System.out.println("ProductService.create: "+Thread.currentThread().getName());
 			CategoryRegistration category = registration.getCategory();
 			return categoryService.create(category.getId(), category.getName()).map(cat -> {
 				return Pair.of(cat, registration);
 			});
 			
 		}).flatMap(pair -> {
+			System.out.println("ProductService.create flatmap: "+Thread.currentThread().getName());
 			ProductRegistration registration = pair.getSecond();
 			Product product = new Product(
 					registration.getName(), 
