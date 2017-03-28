@@ -1,4 +1,4 @@
-package com.github.leosilvadev.store.domain;
+package com.github.leosilvadev.user.domains;
 
 public enum Role {
 	
