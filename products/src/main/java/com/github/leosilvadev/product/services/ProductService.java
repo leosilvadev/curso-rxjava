@@ -15,6 +15,7 @@ import com.github.leosilvadev.product.contracts.ProductRegistration.CategoryRegi
 import com.github.leosilvadev.product.domain.Product;
 import com.github.leosilvadev.product.exception.CategoryNotFound;
 import com.github.leosilvadev.product.repository.ProductRepository;
+import com.github.leosilvadev.store.services.StoreService;
 
 import rx.Observable;
 
@@ -26,6 +27,9 @@ public class ProductService {
 
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	StoreService storeService;
 
 	public Observable<List<Product>> findAllActives() {
 		return defer(() -> {
@@ -43,8 +47,8 @@ public class ProductService {
 		});
 	}
 
-	public Observable<Product> create(ProductRegistration productRegistration) {
-		return just(productRegistration).flatMap(registration -> {
+	public Observable<Product> create(String storeId, ProductRegistration productRegistration) {
+		return storeService.findOne(storeId).map(responseData -> productRegistration).flatMap(registration -> {
 			CategoryRegistration category = registration.getCategory();
 			return categoryService.findOrCreate(category.getId(), category.getName()).map(cat -> {
 				return Pair.of(cat, registration);
@@ -52,7 +56,8 @@ public class ProductService {
 
 		}).switchIfEmpty(Observable.error(new CategoryNotFound())).flatMap(pair -> {
 			ProductRegistration registration = pair.getSecond();
-			Product product = new Product(registration.getName(), registration.getDescription(),
+			Product product = new Product(storeId, 
+					registration.getName(), registration.getDescription(),
 					registration.getPrice(), pair.getFirst());
 			return create(product);
 		});
