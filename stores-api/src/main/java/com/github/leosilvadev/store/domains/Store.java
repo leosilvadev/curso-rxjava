@@ -1,4 +1,4 @@
-package com.github.leosilvadev.store.domain;
+package com.github.leosilvadev.store.domains;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.github.leosilvadev.user.domains.User;
 
 @Document(collection="stores")
 public class Store {

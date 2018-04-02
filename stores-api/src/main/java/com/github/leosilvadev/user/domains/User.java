@@ -1,4 +1,4 @@
-package com.github.leosilvadev.store.domain;
+package com.github.leosilvadev.user.domains;
 
 import org.springframework.data.mongodb.core.index.Indexed;
 
@@ -12,6 +12,8 @@ public class User {
 	private String password;
 	
 	private Boolean active;
+	
+	private Role role;
 	
 	public User() {
 		this.active = true;
@@ -79,6 +81,14 @@ public class User {
 		} else if (!email.equals(other.email))
 			return false;
 		return true;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 }
